@@ -14,13 +14,18 @@ public class Main {
   public static void main(String[] args) {
     List<Ticket> tickets = makeData();
     RapportService rs = new RapportService(tickets);
+
     System.out.println("Système de ventes\n");
     System.out.println("1. Rapport quotidien");
+
     LocalDate today = LocalDate.now();
+
     RapportService.RapportQuotidienServeur rapport = rs.genererRapportQuotidienParServeur(today);
     System.out.println(rapport);
+
     System.out.println("\n2. Top 3 des serveurs (7 jours)");
     LocalDate start = today.minusDays(7);
+
     List<RapportService.PerformanceServeur> top = rs.getServeursLePlusPerformants(start, today, 3);
     for (int i = 0; i < top.size(); i++) {
       System.out.println((i + 1) + ". " + top.get(i));
@@ -28,6 +33,7 @@ public class Main {
     System.out.println("\n3. Catégories par jour de la semaine");
     Map<DayOfWeek, List<RapportService.VenteCategorie>> ventes =
         rs.getCategoriesLePlusVenduesParJourSemaine(start, today);
+
     for (DayOfWeek jour : DayOfWeek.values()) {
       System.out.println("\n" + jour + " :");
       List<RapportService.VenteCategorie> v = ventes.get(jour);
@@ -47,6 +53,7 @@ public class Main {
     Categorie c2 = new Categorie(2, "Plats", "Plats principaux");
     Categorie c3 = new Categorie(3, "Desserts", "Desserts et patisseries");
     Produit p1 = new Produit(1, "Cafe", "Cafe expresso", new BigDecimal("2.50"), c1, 100);
+
     Produit p2 =
         new Produit(2, "Sandwich", "Sandwich jambon-beurre", new BigDecimal("5.80"), c2, 50);
     Produit p3 = new Produit(3, "Tarte", "Tarte aux pommes", new BigDecimal("4.20"), c3, 30);
@@ -55,6 +62,7 @@ public class Main {
     Serveur s1 = new Serveur(1, "Dupont", "Marie", "marie.dupont@email.com", "0123456789");
     Serveur s2 = new Serveur(2, "Martin", "Pierre", "pierre.martin@email.com", "0123456790");
     Serveur s3 = new Serveur(3, "Bernard", "Sophie", "sophie.bernard@email.com", "0123456791");
+
     LocalDateTime now = LocalDateTime.now();
     for (int i = 0; i < 15; i++) {
       Ticket t = new Ticket(i + 1, now.minusHours(i % 8), i % 3 == 0 ? s1 : (i % 3 == 1 ? s2 : s3));
@@ -75,6 +83,7 @@ public class Main {
       t.fermerTicket();
       tickets.add(t);
     }
+
     for (int jour = 1; jour <= 7; jour++) {
       for (int i = 0; i < 8; i++) {
         Ticket t =
